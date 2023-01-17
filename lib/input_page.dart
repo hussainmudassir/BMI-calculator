@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'resusable_card.dart';
 import 'gender_card.dart';
 import 'constants.dart';
+import 'results_page.dart';
+import 'calculate.dart';
 
 enum Gender { MALE, FEMALE }
 
@@ -74,7 +76,7 @@ class _InputPageState extends State<InputPage> {
                   children: <Widget>[
                     Text(
                       height.toString(),
-                      style: NumberTextStyle,
+                      style: numberTextStyle,
                     ),
                     Text(
                       'cm',
@@ -120,12 +122,13 @@ class _InputPageState extends State<InputPage> {
                     ),
                     Text(
                       weight.toString(),
-                      style: NumberTextStyle,
+                      style: numberTextStyle,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         FloatingActionButton(
+                          heroTag: null,
                           backgroundColor: Color(0xFF4C4F5E),
                           elevation: 6,
                           child: Icon(
@@ -140,6 +143,7 @@ class _InputPageState extends State<InputPage> {
                         ),
                         SizedBox(width: 20),
                         FloatingActionButton(
+                          heroTag: null,
                           backgroundColor: Color(0xFF4C4F5E),
                           elevation: 6,
                           child: Icon(
@@ -167,11 +171,12 @@ class _InputPageState extends State<InputPage> {
                       'AGE',
                       style: labelTextStyle,
                     ),
-                    Text(age.toString(), style: NumberTextStyle),
+                    Text(age.toString(), style: numberTextStyle),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         FloatingActionButton(
+                          heroTag: null,
                           backgroundColor: Color(0xFF4C4F5E),
                           elevation: 6,
                           child: Icon(
@@ -186,6 +191,7 @@ class _InputPageState extends State<InputPage> {
                         ),
                         SizedBox(width: 20),
                         FloatingActionButton(
+                          heroTag: null,
                           backgroundColor: Color(0xFF4C4F5E),
                           elevation: 6,
                           child: Icon(
@@ -206,12 +212,32 @@ class _InputPageState extends State<InputPage> {
             ],
           )),
           // Expanded(
-          Container(
-            color: Colors.red,
-            margin: EdgeInsets.only(top: 10),
-            width: double.infinity,
-            height: bottomCardHeight,
-          )
+          GestureDetector(
+              onTap: () {
+                CalculateBMI calculateBMI =
+                    CalculateBMI(height: height, weight: weight);
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ResultPage(
+                              bmiResult: calculateBMI.calculateBMI(),
+                              resultText: calculateBMI.getResult(),
+                              resultDescription: calculateBMI.getDescription(),
+                            )));
+              },
+              child: Container(
+                  color: Colors.red,
+                  margin: EdgeInsets.only(top: 10),
+                  padding: EdgeInsets.only(bottom: 20),
+                  width: double.infinity,
+                  height: bottomCardHeight,
+                  child: Center(
+                    child: Text(
+                      'CALCULATE BMI',
+                      style: bottomButtonTextStyle,
+                    ),
+                  )))
         ],
       ),
     );
